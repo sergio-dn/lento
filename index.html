@@ -1,0 +1,1127 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Planificación Estratégica de Vida</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            padding: 40px;
+        }
+
+        h1 {
+            color: #2d3748;
+            margin-bottom: 12px;
+            font-size: 32px;
+        }
+
+        .subtitle {
+            color: #718096;
+            margin-bottom: 32px;
+            font-size: 16px;
+            line-height: 1.6;
+        }
+
+        .area {
+            margin-bottom: 40px;
+            border-left: 4px solid;
+            padding-left: 24px;
+        }
+
+        .area.relationships { border-color: #ef4444; }
+        .area.body { border-color: #3b82f6; }
+        .area.community { border-color: #f59e0b; }
+        .area.work { border-color: #10b981; }
+        .area.entertainment { border-color: #8b5cf6; }
+        .area.personal { border-color: #6b7280; }
+
+        .area-title {
+            font-size: 20px;
+            font-weight: 600;
+            color: #1a202c;
+            margin-bottom: 20px;
+        }
+
+        .unit {
+            background: #f7fafc;
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 16px;
+            transition: all 0.2s;
+        }
+
+        .unit:hover {
+            background: #edf2f7;
+            transform: translateX(4px);
+        }
+
+        .unit-name {
+            font-weight: 600;
+            color: #2d3748;
+            margin-bottom: 4px;
+            font-size: 16px;
+        }
+
+        .unit-desc {
+            color: #718096;
+            font-size: 14px;
+            margin-bottom: 16px;
+        }
+
+        .sliders {
+            display: grid;
+            gap: 16px;
+        }
+
+        .slider-group {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .slider-label {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 14px;
+            color: #4a5568;
+            font-weight: 500;
+        }
+
+        .slider-value {
+            background: #667eea;
+            color: white;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-weight: 600;
+            min-width: 40px;
+            text-align: center;
+        }
+
+        input[type="range"] {
+            width: 100%;
+            height: 8px;
+            border-radius: 4px;
+            background: #e2e8f0;
+            outline: none;
+            -webkit-appearance: none;
+        }
+
+        input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: #667eea;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        input[type="range"]::-webkit-slider-thumb:hover {
+            transform: scale(1.2);
+            background: #5a67d8;
+        }
+
+        input[type="range"]::-moz-range-thumb {
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: #667eea;
+            cursor: pointer;
+            border: none;
+            transition: all 0.2s;
+        }
+
+        input[type="range"]::-moz-range-thumb:hover {
+            transform: scale(1.2);
+            background: #5a67d8;
+        }
+
+        .analyze-btn {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 16px 32px;
+            font-size: 18px;
+            font-weight: 600;
+            border-radius: 8px;
+            cursor: pointer;
+            width: 100%;
+            margin-top: 32px;
+            transition: all 0.3s;
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+        }
+
+        .analyze-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(102, 126, 234, 0.6);
+        }
+
+        .export-btn {
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            color: white;
+            border: none;
+            padding: 16px 32px;
+            font-size: 18px;
+            font-weight: 600;
+            border-radius: 8px;
+            cursor: pointer;
+            width: 100%;
+            margin-top: 16px;
+            transition: all 0.3s;
+            box-shadow: 0 4px 12px rgba(16, 185, 129, 0.4);
+        }
+
+        .export-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(16, 185, 129, 0.6);
+        }
+
+        .export-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .results {
+            margin-top: 40px;
+            padding-top: 40px;
+            border-top: 2px solid #e2e8f0;
+            display: none;
+        }
+
+        .results.visible {
+            display: block;
+        }
+
+        .results h2 {
+            color: #2d3748;
+            margin-bottom: 24px;
+            font-size: 28px;
+        }
+
+        .insight-box {
+            background: #f7fafc;
+            border-left: 4px solid #667eea;
+            padding: 20px;
+            margin-bottom: 20px;
+            border-radius: 8px;
+        }
+
+        .insight-title {
+            font-weight: 600;
+            color: #2d3748;
+            margin-bottom: 8px;
+            font-size: 18px;
+        }
+
+        .insight-content {
+            color: #4a5568;
+            line-height: 1.6;
+        }
+
+        .priority-list {
+            list-style: none;
+            counter-reset: priority-counter;
+        }
+
+        .priority-item {
+            counter-increment: priority-counter;
+            background: white;
+            border: 2px solid #e2e8f0;
+            border-radius: 8px;
+            padding: 16px;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .priority-number {
+            background: #667eea;
+            color: white;
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 18px;
+            flex-shrink: 0;
+        }
+
+        .priority-number::before {
+            content: counter(priority-counter);
+        }
+
+        .priority-details {
+            flex: 1;
+        }
+
+        .priority-name {
+            font-weight: 600;
+            color: #2d3748;
+            margin-bottom: 4px;
+        }
+
+        .priority-gap {
+            color: #718096;
+            font-size: 14px;
+        }
+
+        .gap-critical { color: #ef4444; font-weight: 600; }
+        .gap-high { color: #f59e0b; font-weight: 600; }
+        .gap-medium { color: #10b981; font-weight: 600; }
+
+        .summary-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 24px;
+            background: white;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        .summary-table thead {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+
+        .summary-table th {
+            padding: 16px;
+            text-align: left;
+            font-weight: 600;
+            font-size: 14px;
+        }
+
+        .summary-table td {
+            padding: 12px 16px;
+            border-bottom: 1px solid #e2e8f0;
+            font-size: 14px;
+        }
+
+        .summary-table tbody tr:hover {
+            background: #f7fafc;
+        }
+
+        .summary-table tbody tr:last-child td {
+            border-bottom: none;
+        }
+
+        .area-label {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: 500;
+            color: white;
+        }
+
+        .area-label.relationships { background: #ef4444; }
+        .area-label.body { background: #3b82f6; }
+        .area-label.community { background: #f59e0b; }
+        .area-label.work { background: #10b981; }
+        .area-label.entertainment { background: #8b5cf6; }
+        .area-label.personal { background: #6b7280; }
+
+        .value-cell {
+            text-align: center;
+            font-weight: 600;
+            font-size: 16px;
+        }
+
+        .gap-cell {
+            text-align: center;
+            font-weight: 700;
+            font-size: 16px;
+        }
+
+        @media print {
+            body {
+                background: white;
+                padding: 0;
+            }
+            
+            .container {
+                box-shadow: none;
+                padding: 20px;
+                max-width: 100%;
+            }
+            
+            .area, .unit, .sliders, .slider-group, input[type="range"], .analyze-btn {
+                display: none !important;
+            }
+            
+            .results {
+                display: block !important;
+                border-top: none;
+                margin-top: 0;
+                padding-top: 0;
+            }
+            
+            .export-btn {
+                display: none !important;
+            }
+            
+            .insight-box {
+                page-break-inside: avoid;
+            }
+            
+            .priority-item {
+                page-break-inside: avoid;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Planificación Estratégica de Vida</h1>
+        <p class="subtitle">Evaluá cada unidad de vida según dos dimensiones: qué tan importante es para vos (0-10) y cuánta satisfacción te genera actualmente (0-10). La brecha entre ambas te mostrará dónde enfocar tu energía.</p>
+
+        <div class="area relationships">
+            <div class="area-title">1. Relaciones</div>
+            
+            <div class="unit">
+                <div class="unit-name">Pareja/Relación significativa</div>
+                <div class="unit-desc">Tiempo con tu pareja, citas, intimidad</div>
+                <div class="sliders">
+                    <div class="slider-group">
+                        <div class="slider-label">
+                            <span>Importancia</span>
+                            <span class="slider-value" id="partner-importance-val">5</span>
+                        </div>
+                        <input type="range" min="0" max="10" value="5" id="partner-importance">
+                    </div>
+                    <div class="slider-group">
+                        <div class="slider-label">
+                            <span>Satisfacción actual</span>
+                            <span class="slider-value" id="partner-satisfaction-val">5</span>
+                        </div>
+                        <input type="range" min="0" max="10" value="5" id="partner-satisfaction">
+                    </div>
+                </div>
+            </div>
+
+            <div class="unit">
+                <div class="unit-name">Familia</div>
+                <div class="unit-desc">Interacción con hijos, padres, hermanos</div>
+                <div class="sliders">
+                    <div class="slider-group">
+                        <div class="slider-label">
+                            <span>Importancia</span>
+                            <span class="slider-value" id="family-importance-val">5</span>
+                        </div>
+                        <input type="range" min="0" max="10" value="5" id="family-importance">
+                    </div>
+                    <div class="slider-group">
+                        <div class="slider-label">
+                            <span>Satisfacción actual</span>
+                            <span class="slider-value" id="family-satisfaction-val">5</span>
+                        </div>
+                        <input type="range" min="0" max="10" value="5" id="family-satisfaction">
+                    </div>
+                </div>
+            </div>
+
+            <div class="unit">
+                <div class="unit-name">Amistades</div>
+                <div class="unit-desc">Tiempo con amigos, socialización</div>
+                <div class="sliders">
+                    <div class="slider-group">
+                        <div class="slider-label">
+                            <span>Importancia</span>
+                            <span class="slider-value" id="friendship-importance-val">5</span>
+                        </div>
+                        <input type="range" min="0" max="10" value="5" id="friendship-importance">
+                    </div>
+                    <div class="slider-group">
+                        <div class="slider-label">
+                            <span>Satisfacción actual</span>
+                            <span class="slider-value" id="friendship-satisfaction-val">5</span>
+                        </div>
+                        <input type="range" min="0" max="10" value="5" id="friendship-satisfaction">
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="area body">
+            <div class="area-title">2. Cuerpo, Mente y Espiritualidad</div>
+            
+            <div class="unit">
+                <div class="unit-name">Salud física/Deporte</div>
+                <div class="unit-desc">Ejercicio, terapia física, actividad deportiva</div>
+                <div class="sliders">
+                    <div class="slider-group">
+                        <div class="slider-label">
+                            <span>Importancia</span>
+                            <span class="slider-value" id="physical-importance-val">5</span>
+                        </div>
+                        <input type="range" min="0" max="10" value="5" id="physical-importance">
+                    </div>
+                    <div class="slider-group">
+                        <div class="slider-label">
+                            <span>Satisfacción actual</span>
+                            <span class="slider-value" id="physical-satisfaction-val">5</span>
+                        </div>
+                        <input type="range" min="0" max="10" value="5" id="physical-satisfaction">
+                    </div>
+                </div>
+            </div>
+
+            <div class="unit">
+                <div class="unit-name">Salud mental/Mindfulness</div>
+                <div class="unit-desc">Psicoterapia, meditación, trabajo emocional</div>
+                <div class="sliders">
+                    <div class="slider-group">
+                        <div class="slider-label">
+                            <span>Importancia</span>
+                            <span class="slider-value" id="mental-importance-val">5</span>
+                        </div>
+                        <input type="range" min="0" max="10" value="5" id="mental-importance">
+                    </div>
+                    <div class="slider-group">
+                        <div class="slider-label">
+                            <span>Satisfacción actual</span>
+                            <span class="slider-value" id="mental-satisfaction-val">5</span>
+                        </div>
+                        <input type="range" min="0" max="10" value="5" id="mental-satisfaction">
+                    </div>
+                </div>
+            </div>
+
+            <div class="unit">
+                <div class="unit-name">Espiritualidad/Fe</div>
+                <div class="unit-desc">Práctica religiosa, conexión espiritual</div>
+                <div class="sliders">
+                    <div class="slider-group">
+                        <div class="slider-label">
+                            <span>Importancia</span>
+                            <span class="slider-value" id="spiritual-importance-val">5</span>
+                        </div>
+                        <input type="range" min="0" max="10" value="5" id="spiritual-importance">
+                    </div>
+                    <div class="slider-group">
+                        <div class="slider-label">
+                            <span>Satisfacción actual</span>
+                            <span class="slider-value" id="spiritual-satisfaction-val">5</span>
+                        </div>
+                        <input type="range" min="0" max="10" value="5" id="spiritual-satisfaction">
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="area community">
+            <div class="area-title">3. Comunidad y Sociedad</div>
+            
+            <div class="unit">
+                <div class="unit-name">Comunidad/Ciudadanía</div>
+                <div class="unit-desc">Clubes locales, participación ciudadana</div>
+                <div class="sliders">
+                    <div class="slider-group">
+                        <div class="slider-label">
+                            <span>Importancia</span>
+                            <span class="slider-value" id="community-importance-val">5</span>
+                        </div>
+                        <input type="range" min="0" max="10" value="5" id="community-importance">
+                    </div>
+                    <div class="slider-group">
+                        <div class="slider-label">
+                            <span>Satisfacción actual</span>
+                            <span class="slider-value" id="community-satisfaction-val">5</span>
+                        </div>
+                        <input type="range" min="0" max="10" value="5" id="community-satisfaction">
+                    </div>
+                </div>
+            </div>
+
+            <div class="unit">
+                <div class="unit-name">Compromiso social</div>
+                <div class="unit-desc">Voluntariado, activismo</div>
+                <div class="sliders">
+                    <div class="slider-group">
+                        <div class="slider-label">
+                            <span>Importancia</span>
+                            <span class="slider-value" id="social-importance-val">5</span>
+                        </div>
+                        <input type="range" min="0" max="10" value="5" id="social-importance">
+                    </div>
+                    <div class="slider-group">
+                        <div class="slider-label">
+                            <span>Satisfacción actual</span>
+                            <span class="slider-value" id="social-satisfaction-val">5</span>
+                        </div>
+                        <input type="range" min="0" max="10" value="5" id="social-satisfaction">
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="area work">
+            <div class="area-title">4. Trabajo, Aprendizaje y Finanzas</div>
+            
+            <div class="unit">
+                <div class="unit-name">Trabajo/Carrera</div>
+                <div class="unit-desc">Tu actividad laboral principal</div>
+                <div class="sliders">
+                    <div class="slider-group">
+                        <div class="slider-label">
+                            <span>Importancia</span>
+                            <span class="slider-value" id="job-importance-val">5</span>
+                        </div>
+                        <input type="range" min="0" max="10" value="5" id="job-importance">
+                    </div>
+                    <div class="slider-group">
+                        <div class="slider-label">
+                            <span>Satisfacción actual</span>
+                            <span class="slider-value" id="job-satisfaction-val">5</span>
+                        </div>
+                        <input type="range" min="0" max="10" value="5" id="job-satisfaction">
+                    </div>
+                </div>
+            </div>
+
+            <div class="unit">
+                <div class="unit-name">Educación/Aprendizaje</div>
+                <div class="unit-desc">Cursos, formación, desarrollo de habilidades</div>
+                <div class="sliders">
+                    <div class="slider-group">
+                        <div class="slider-label">
+                            <span>Importancia</span>
+                            <span class="slider-value" id="education-importance-val">5</span>
+                        </div>
+                        <input type="range" min="0" max="10" value="5" id="education-importance">
+                    </div>
+                    <div class="slider-group">
+                        <div class="slider-label">
+                            <span>Satisfacción actual</span>
+                            <span class="slider-value" id="education-satisfaction-val">5</span>
+                        </div>
+                        <input type="range" min="0" max="10" value="5" id="education-satisfaction">
+                    </div>
+                </div>
+            </div>
+
+            <div class="unit">
+                <div class="unit-name">Finanzas</div>
+                <div class="unit-desc">Planificación financiera, inversiones</div>
+                <div class="sliders">
+                    <div class="slider-group">
+                        <div class="slider-label">
+                            <span>Importancia</span>
+                            <span class="slider-value" id="finance-importance-val">5</span>
+                        </div>
+                        <input type="range" min="0" max="10" value="5" id="finance-importance">
+                    </div>
+                    <div class="slider-group">
+                        <div class="slider-label">
+                            <span>Satisfacción actual</span>
+                            <span class="slider-value" id="finance-satisfaction-val">5</span>
+                        </div>
+                        <input type="range" min="0" max="10" value="5" id="finance-satisfaction">
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="area entertainment">
+            <div class="area-title">5. Intereses y Entretenimiento</div>
+            
+            <div class="unit">
+                <div class="unit-name">Hobbies/Intereses</div>
+                <div class="unit-desc">Lectura, coleccionismo, proyectos personales</div>
+                <div class="sliders">
+                    <div class="slider-group">
+                        <div class="slider-label">
+                            <span>Importancia</span>
+                            <span class="slider-value" id="hobbies-importance-val">5</span>
+                        </div>
+                        <input type="range" min="0" max="10" value="5" id="hobbies-importance">
+                    </div>
+                    <div class="slider-group">
+                        <div class="slider-label">
+                            <span>Satisfacción actual</span>
+                            <span class="slider-value" id="hobbies-satisfaction-val">5</span>
+                        </div>
+                        <input type="range" min="0" max="10" value="5" id="hobbies-satisfaction">
+                    </div>
+                </div>
+            </div>
+
+            <div class="unit">
+                <div class="unit-name">Entretenimiento online</div>
+                <div class="unit-desc">Redes sociales, TV, gaming</div>
+                <div class="sliders">
+                    <div class="slider-group">
+                        <div class="slider-label">
+                            <span>Importancia</span>
+                            <span class="slider-value" id="online-importance-val">5</span>
+                        </div>
+                        <input type="range" min="0" max="10" value="5" id="online-importance">
+                    </div>
+                    <div class="slider-group">
+                        <div class="slider-label">
+                            <span>Satisfacción actual</span>
+                            <span class="slider-value" id="online-satisfaction-val">5</span>
+                        </div>
+                        <input type="range" min="0" max="10" value="5" id="online-satisfaction">
+                    </div>
+                </div>
+            </div>
+
+            <div class="unit">
+                <div class="unit-name">Entretenimiento offline</div>
+                <div class="unit-desc">Vacaciones, teatro, eventos deportivos</div>
+                <div class="sliders">
+                    <div class="slider-group">
+                        <div class="slider-label">
+                            <span>Importancia</span>
+                            <span class="slider-value" id="offline-importance-val">5</span>
+                        </div>
+                        <input type="range" min="0" max="10" value="5" id="offline-importance">
+                    </div>
+                    <div class="slider-group">
+                        <div class="slider-label">
+                            <span>Satisfacción actual</span>
+                            <span class="slider-value" id="offline-satisfaction-val">5</span>
+                        </div>
+                        <input type="range" min="0" max="10" value="5" id="offline-satisfaction">
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="area personal">
+            <div class="area-title">6. Cuidado Personal</div>
+            
+            <div class="unit">
+                <div class="unit-name">Necesidades fisiológicas</div>
+                <div class="unit-desc">Alimentación, sueño, descanso</div>
+                <div class="sliders">
+                    <div class="slider-group">
+                        <div class="slider-label">
+                            <span>Importancia</span>
+                            <span class="slider-value" id="physiological-importance-val">5</span>
+                        </div>
+                        <input type="range" min="0" max="10" value="5" id="physiological-importance">
+                    </div>
+                    <div class="slider-group">
+                        <div class="slider-label">
+                            <span>Satisfacción actual</span>
+                            <span class="slider-value" id="physiological-satisfaction-val">5</span>
+                        </div>
+                        <input type="range" min="0" max="10" value="5" id="physiological-satisfaction">
+                    </div>
+                </div>
+            </div>
+
+            <div class="unit">
+                <div class="unit-name">Actividades de la vida diaria</div>
+                <div class="unit-desc">Traslados, tareas domésticas, organización</div>
+                <div class="sliders">
+                    <div class="slider-group">
+                        <div class="slider-label">
+                            <span>Importancia</span>
+                            <span class="slider-value" id="daily-importance-val">5</span>
+                        </div>
+                        <input type="range" min="0" max="10" value="5" id="daily-importance">
+                    </div>
+                    <div class="slider-group">
+                        <div class="slider-label">
+                            <span>Satisfacción actual</span>
+                            <span class="slider-value" id="daily-satisfaction-val">5</span>
+                        </div>
+                        <input type="range" min="0" max="10" value="5" id="daily-satisfaction">
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <button class="analyze-btn" onclick="analyzeResults()">Analizar Resultados</button>
+
+        <div class="results" id="results">
+            <h2>Análisis de tu Situación Actual</h2>
+            <div id="analysis-content"></div>
+        </div>
+    </div>
+
+    <script>
+        // Update slider values in real-time
+        const sliders = document.querySelectorAll('input[type="range"]');
+        sliders.forEach(slider => {
+            slider.addEventListener('input', function() {
+                const valueDisplay = document.getElementById(this.id + '-val');
+                valueDisplay.textContent = this.value;
+            });
+        });
+
+        function analyzeResults() {
+            const units = [
+                {name: 'Pareja/Relación significativa', prefix: 'partner', area: 'Relaciones'},
+                {name: 'Familia', prefix: 'family', area: 'Relaciones'},
+                {name: 'Amistades', prefix: 'friendship', area: 'Relaciones'},
+                {name: 'Salud física/Deporte', prefix: 'physical', area: 'Cuerpo, Mente y Espiritualidad'},
+                {name: 'Salud mental/Mindfulness', prefix: 'mental', area: 'Cuerpo, Mente y Espiritualidad'},
+                {name: 'Espiritualidad/Fe', prefix: 'spiritual', area: 'Cuerpo, Mente y Espiritualidad'},
+                {name: 'Comunidad/Ciudadanía', prefix: 'community', area: 'Comunidad y Sociedad'},
+                {name: 'Compromiso social', prefix: 'social', area: 'Comunidad y Sociedad'},
+                {name: 'Trabajo/Carrera', prefix: 'job', area: 'Trabajo, Aprendizaje y Finanzas'},
+                {name: 'Educación/Aprendizaje', prefix: 'education', area: 'Trabajo, Aprendizaje y Finanzas'},
+                {name: 'Finanzas', prefix: 'finance', area: 'Trabajo, Aprendizaje y Finanzas'},
+                {name: 'Hobbies/Intereses', prefix: 'hobbies', area: 'Intereses y Entretenimiento'},
+                {name: 'Entretenimiento online', prefix: 'online', area: 'Intereses y Entretenimiento'},
+                {name: 'Entretenimiento offline', prefix: 'offline', area: 'Intereses y Entretenimiento'},
+                {name: 'Necesidades fisiológicas', prefix: 'physiological', area: 'Cuidado Personal'},
+                {name: 'Actividades de la vida diaria', prefix: 'daily', area: 'Cuidado Personal'}
+            ];
+
+            const results = units.map(unit => {
+                const importance = parseInt(document.getElementById(unit.prefix + '-importance').value);
+                const satisfaction = parseInt(document.getElementById(unit.prefix + '-satisfaction').value);
+                const gap = importance - satisfaction;
+                
+                // Impacto ponderado: brecha × importancia²
+                // Esto refleja que cerrar una brecha en algo muy importante vale exponencialmente más
+                const weightedImpact = gap * (importance * importance);
+                
+                return {
+                    name: unit.name,
+                    area: unit.area,
+                    importance,
+                    satisfaction,
+                    gap,
+                    weightedImpact
+                };
+            });
+
+            // Ordenar por impacto ponderado (mayor impacto = mayor prioridad)
+            results.sort((a, b) => b.weightedImpact - a.weightedImpact);
+
+            // Calculate overall score and metrics
+            const sumImportance = results.reduce((sum, r) => sum + r.importance, 0);
+            const sumWeightedSatisfaction = results.reduce((sum, r) => sum + (r.importance * r.satisfaction), 0);
+            const overallScore = (sumWeightedSatisfaction / sumImportance).toFixed(2);
+
+            // Calculate Aporte and Potencial Mejora for each item
+            results.forEach(item => {
+                item.aporte = ((item.satisfaction * item.importance) / sumImportance).toFixed(2);
+                item.potencialMejora = (((10 - item.satisfaction) * item.importance) / sumImportance).toFixed(2);
+            });
+
+            // Sort by Potencial Mejora descending
+            results.sort((a, b) => parseFloat(b.potencialMejora) - parseFloat(a.potencialMejora));
+
+            // Identify top contributors and improvement areas
+            const topContributors = [...results].sort((a, b) => parseFloat(b.aporte) - parseFloat(a.aporte)).slice(0, 3);
+            const topImprovementAreas = results.slice(0, 5);
+            const highImportanceAreas = [...results].filter(r => r.importance >= 8).sort((a, b) => b.importance - a.importance);
+
+            // Start building HTML
+            let html = `
+                <div class="insight-box" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; border: none;">
+                    <div style="text-align: center;">
+                        <div style="font-size: 48px; font-weight: 700; margin-bottom: 8px;">${overallScore}/10</div>
+                        <div style="font-size: 18px; opacity: 0.9;">Score General de Satisfacción Ponderada</div>
+                    </div>
+                </div>
+
+                <div class="insight-box" style="margin-top: 24px;">
+                    <div class="insight-title">📊 Análisis del Score General</div>
+                    <div class="insight-content">
+                        <p style="margin-bottom: 12px;">
+                            Tu score de ${overallScore}/10 indica que ${
+                                overallScore >= 7.5 ? 'tu vida está relativamente bien balanceada según tus prioridades, aunque hay áreas específicas que necesitan atención' :
+                                overallScore >= 6 ? 'hay un desbalance moderado entre lo que es importante para vos y tu satisfacción actual' :
+                                overallScore >= 4.5 ? 'existe una brecha significativa entre tus prioridades y tu satisfacción actual que requiere intervención estratégica' :
+                                'hay un desalineamiento crítico entre lo que valorás y cómo estás viviendo, lo cual requiere cambios estructurales'
+                            }.
+                        </p>
+                        <p style="margin-bottom: 12px;">
+                            <strong>Las áreas que más aportan a tu satisfacción actual son:</strong><br>
+                            ${topContributors.map((item, i) => `${i + 1}. ${item.name} (Aporte: ${item.aporte})`).join('<br>')}
+                        </p>
+                        <p>
+                            <strong>Para subir tu score significativamente, necesitás trabajar en:</strong><br>
+                            ${topImprovementAreas.slice(0, 3).map((item, i) => `${i + 1}. ${item.name} (Potencial de mejora: ${item.potencialMejora})`).join('<br>')}
+                        </p>
+                    </div>
+                </div>
+
+                <div style="margin-top: 32px;">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
+                        <h3 style="color: #2d3748; margin: 0;">Detalle por Área - Ordenado por Potencial de Mejora</h3>
+                        <button onclick="document.getElementById('detailTable').style.display = document.getElementById('detailTable').style.display === 'none' ? 'table' : 'none'; this.textContent = document.getElementById('detailTable').style.display === 'none' ? '▼ Mostrar Tabla' : '▲ Ocultar Tabla'" 
+                                style="background: #667eea; color: white; border: none; padding: 8px 16px; border-radius: 6px; cursor: pointer; font-weight: 600;">
+                            ▲ Ocultar Tabla
+                        </button>
+                    </div>
+                    <p style="margin-bottom: 20px; color: #4a5568; font-size: 14px;">
+                        <strong>Aporte:</strong> Contribución actual de cada área a tu satisfacción general (más alto = más impacto positivo actual).<br>
+                        <strong>Potencial de Mejora:</strong> Cuánto podés ganar trabajando en esta área (más alto = mayor oportunidad de impacto).
+                    </p>
+                    <table class="summary-table" id="detailTable">
+                        <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>Área de Vida</th>
+                                <th style="width: 180px;">Categoría</th>
+                                <th style="text-align: center; width: 100px;">Importancia</th>
+                                <th style="text-align: center; width: 120px;">Aporte</th>
+                                <th style="text-align: center; width: 140px;">Potencial Mejora</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+            `;
+
+            results.forEach((item, index) => {
+                let areaClass = '';
+                if (item.area === 'Relaciones') areaClass = 'relationships';
+                else if (item.area === 'Cuerpo, Mente y Espiritualidad') areaClass = 'body';
+                else if (item.area === 'Comunidad y Sociedad') areaClass = 'community';
+                else if (item.area === 'Trabajo, Aprendizaje y Finanzas') areaClass = 'work';
+                else if (item.area === 'Intereses y Entretenimiento') areaClass = 'entertainment';
+                else if (item.area === 'Cuidado Personal') areaClass = 'personal';
+
+                let potencialColor = '';
+                if (parseFloat(item.potencialMejora) >= 4) potencialColor = '#ef4444';
+                else if (parseFloat(item.potencialMejora) >= 2.5) potencialColor = '#f59e0b';
+                else if (parseFloat(item.potencialMejora) >= 1) potencialColor = '#10b981';
+                else potencialColor = '#6b7280';
+
+                html += `
+                    <tr>
+                        <td style="text-align: center; font-weight: 600; color: #667eea;">${index + 1}</td>
+                        <td><strong>${item.name}</strong></td>
+                        <td><span class="area-label ${areaClass}">${item.area}</span></td>
+                        <td class="value-cell">${item.importance}</td>
+                        <td class="value-cell">${item.aporte}</td>
+                        <td class="gap-cell" style="color: ${potencialColor}; font-weight: 700;">${item.potencialMejora}</td>
+                    </tr>
+                `;
+            });
+
+            html += `
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="insight-box" style="margin-top: 40px;">
+                    <div class="insight-title">🎯 Máxima Prioridad: Top 3 Áreas de Mejora</div>
+                    <div class="insight-content">
+                        <p style="margin-bottom: 20px;">Estas son las 3 áreas con mayor potencial de impacto en tu satisfacción general:</p>
+            `;
+
+            // Get action ideas for each area
+            const actionIdeas = {
+                'Espiritualidad/Fe': [
+                    'Establecé una práctica diaria de 10 minutos (meditación, oración, o lectura reflexiva)',
+                    'Conectá con una comunidad espiritual o grupo de práctica afín a tus valores'
+                ],
+                'Educación/Aprendizaje': [
+                    'Inscribite en un curso o programa específico que amplíe tus capacidades profesionales o personales',
+                    'Dedicá 30 minutos diarios a lectura o aprendizaje estructurado en un área que te interese'
+                ],
+                'Salud mental/Mindfulness': [
+                    'Comenzá terapia con un profesional o retomá si ya tenías',
+                    'Establecé una rutina de mindfulness: 10-15 minutos diarios de meditación o journaling'
+                ],
+                'Hobbies/Intereses': [
+                    'Bloqueá 2-3 horas semanales específicas en tu calendario para tu hobby principal',
+                    'Comenzá un proyecto concreto relacionado a tu interés (no solo consumir contenido)'
+                ],
+                'Pareja/Relación significativa': [
+                    'Establecé una "cita semanal" no negociable de calidad (sin pantallas)',
+                    'Tené una conversación honesta sobre expectativas y necesidades mutuas'
+                ],
+                'Compromiso social': [
+                    'Elegí una causa específica y comprometete con una acción concreta mensual',
+                    'Buscá una organización o grupo donde puedas aportar 2-4 horas al mes'
+                ],
+                'Salud física/Deporte': [
+                    'Establecé una rutina de ejercicio de 3 veces por semana (agendado como reunión no cancelable)',
+                    'Contratá un entrenador o sumáte a un grupo/clase que genere accountability'
+                ],
+                'Necesidades fisiológicas': [
+                    'Establecé horarios fijos para las 3 comidas principales y 7-8 horas de sueño',
+                    'Hacé un análisis de qué está afectando tu descanso/alimentación y corregilo'
+                ],
+                'Trabajo/Carrera': [
+                    'Definí 2-3 objetivos profesionales específicos para los próximos 6 meses',
+                    'Hablá con tu jefe/mentor sobre desarrollo y oportunidades de crecimiento'
+                ],
+                'Familia': [
+                    'Establecé un ritual semanal específico de conexión familiar',
+                    'Tomá la iniciativa en organizar encuentros o conversaciones importantes'
+                ],
+                'Amistades': [
+                    'Contactá activamente a 2-3 amigos clave cada semana (no solo responder)',
+                    'Organizá algo regular: cena mensual, actividad compartida, o salida grupal'
+                ],
+                'Finanzas': [
+                    'Armá un presupuesto real y revisalo mensualmente',
+                    'Definí una meta financiera específica y un plan de ahorro/inversión'
+                ],
+                'Comunidad/Ciudadanía': [
+                    'Participá en una organización comunitaria local o consejo vecinal',
+                    'Asumí un rol activo en algún espacio de tu barrio o comunidad'
+                ],
+                'Entretenimiento offline': [
+                    'Planeá 1-2 experiencias culturales o sociales al mes (teatro, conciertos, viajes)',
+                    'Agendá tiempo específico para actividades que te nutran fuera de pantallas'
+                ],
+                'Entretenimiento online': [
+                    'Establecé límites claros de tiempo para redes sociales y gaming',
+                    'Reemplazá consumo pasivo por creación o interacción más activa'
+                ],
+                'Actividades de la vida diaria': [
+                    'Automatizá o delegá tareas que te consumen energía innecesariamente',
+                    'Optimizá tus sistemas de organización doméstica (limpieza, compras, etc.)'
+                ]
+            };
+
+            topImprovementAreas.slice(0, 3).forEach((item, index) => {
+                const ideas = actionIdeas[item.name] || ['Definí acciones concretas para esta área', 'Establecé rutinas o compromisos específicos'];
+                html += `
+                    <div style="background: white; border: 2px solid #e2e8f0; border-radius: 8px; padding: 20px; margin-bottom: 16px;">
+                        <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 12px;">
+                            <div style="background: #ef4444; color: white; width: 32px; height: 32px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 16px;">
+                                ${index + 1}
+                            </div>
+                            <div>
+                                <div style="font-weight: 700; font-size: 18px; color: #2d3748;">${item.name}</div>
+                                <div style="font-size: 13px; color: #718096;">Potencial de Mejora: ${item.potencialMejora} | Importancia: ${item.importance}/10 | Satisfacción: ${item.satisfaction}/10</div>
+                            </div>
+                        </div>
+                        <div style="background: #f7fafc; padding: 12px; border-radius: 6px; margin-top: 12px;">
+                            <div style="font-weight: 600; color: #4a5568; margin-bottom: 8px; font-size: 14px;">💡 Ideas de acción:</div>
+                            <ul style="margin: 0; padding-left: 20px; color: #4a5568; font-size: 14px; line-height: 1.6;">
+                                <li>${ideas[0]}</li>
+                                <li>${ideas[1]}</li>
+                            </ul>
+                        </div>
+                    </div>
+                `;
+            });
+
+            html += `
+                    </div>
+                </div>
+
+                <div class="insight-box" style="margin-top: 24px;">
+                    <div class="insight-title">💎 Áreas a Sostener: Top 3 Contribuyentes Actuales</div>
+                    <div class="insight-content">
+                        <p style="margin-bottom: 20px;">Estas áreas están aportando más a tu bienestar actual. No las descuides mientras trabajás en las mejoras:</p>
+            `;
+
+            const positiveMessages = {
+                'Necesidades fisiológicas': 'Seguí priorizando tu descanso y alimentación: son la base de todo lo demás',
+                'Entretenimiento offline': 'Estas experiencias te recargan y te conectan con vos mismo, no las sacrifiques',
+                'Trabajo/Carrera': 'Tu estabilidad profesional es un ancla importante, mantenela mientras construís otras áreas',
+                'Educación/Aprendizaje': 'Tu inversión en aprendizaje te está dando satisfacción, no la abandones',
+                'Entretenimiento online': 'Este tiempo de desconexión tiene valor, solo asegurate de que sea intencional',
+                'Familia': 'Estas conexiones familiares son un pilar de estabilidad, nutrilas conscientemente',
+                'Finanzas': 'Tu orden financiero te da tranquilidad, seguí con esa disciplina',
+                'Salud física/Deporte': 'Tu cuerpo te agradece esta atención, no aflojes',
+                'Amistades': 'Estas relaciones te sostienen más de lo que creés, seguí cultivándolas',
+                'Pareja/Relación significativa': 'Esta conexión te aporta mucho, protegé este espacio',
+                'Espiritualidad/Fe': 'Tu práctica espiritual te está nutriendo profundamente, mantenela',
+                'Hobbies/Intereses': 'Tus intereses te definen y te dan energía, no los relegues',
+                'Salud mental/Mindfulness': 'Tu trabajo interno es fundamental, seguí priorizándolo',
+                'Compromiso social': 'Tu contribución al mundo te da sentido, es parte de quién sos',
+                'Comunidad/Ciudadanía': 'Tu participación comunitaria te conecta con algo más grande',
+                'Actividades de la vida diaria': 'Tu organización cotidiana te da estructura y calma'
+            };
+
+            topContributors.slice(0, 3).forEach((item, index) => {
+                const message = positiveMessages[item.name] || 'Esta área te está funcionando bien, mantenela así';
+                html += `
+                    <div style="background: white; border: 2px solid #e2e8f0; border-radius: 8px; padding: 20px; margin-bottom: 16px;">
+                        <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 8px;">
+                            <div style="background: #10b981; color: white; width: 32px; height: 32px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 16px;">
+                                ${index + 1}
+                            </div>
+                            <div>
+                                <div style="font-weight: 700; font-size: 18px; color: #2d3748;">${item.name}</div>
+                                <div style="font-size: 13px; color: #718096;">Aporte actual: ${item.aporte} | Importancia: ${item.importance}/10 | Satisfacción: ${item.satisfaction}/10</div>
+                            </div>
+                        </div>
+                        <div style="background: #f0fdf4; padding: 12px; border-radius: 6px; margin-top: 12px; border-left: 3px solid #10b981;">
+                            <div style="color: #065f46; font-size: 14px; line-height: 1.6;">
+                                ✓ ${message}
+                            </div>
+                        </div>
+                    </div>
+                `;
+            });
+
+            html += `
+                    </div>
+                </div>
+
+                <div class="insight-box" style="margin-top: 40px; background: #f7fafc; border-left: 4px solid #667eea;">
+                    <div class="insight-title">🔍 Resumen General: Estado de Tu Vida</div>
+                    <div class="insight-content" style="line-height: 1.8;">
+                        <p style="margin-bottom: 16px;">
+                            Con un score general de ${overallScore}/10, tu vida muestra ${
+                                overallScore >= 7 ? 'un balance razonablemente positivo' : 
+                                overallScore >= 5.5 ? 'un estado intermedio con clara oportunidad de mejora' :
+                                'áreas críticas que requieren atención inmediata'
+                            }. Las áreas que actualmente más contribuyen a tu bienestar son ${topContributors[0].name} (${topContributors[0].aporte}), ${topContributors[1].name} (${topContributors[1].aporte}), y ${topContributors[2].name} (${topContributors[2].aporte}), lo cual indica que ${
+                                parseFloat(topContributors[0].aporte) + parseFloat(topContributors[1].aporte) + parseFloat(topContributors[2].aporte) > sumImportance * 0.35 ? 
+                                'tenés algunos pilares sólidos sobre los cuales construir' :
+                                'incluso tus áreas más fuertes tienen espacio considerable de crecimiento'
+                            }. Sin embargo, ${
+                                results.filter(r => parseFloat(r.potencialMejora) >= 3).length
+                            } áreas presentan un potencial de mejora significativo (≥3.0), lo que sugiere que hay desbalances estructurales entre lo que valorás y cómo estás viviendo actualmente.
+                        </p>
+                        <p>
+                            Lo más crítico es que ${topImprovementAreas[0].name}, ${topImprovementAreas[1].name}, y ${topImprovementAreas[2].name} representan las mayores oportunidades de impacto: juntas tienen un potencial de mejora combinado de ${
+                                (parseFloat(topImprovementAreas[0].potencialMejora) + 
+                                 parseFloat(topImprovementAreas[1].potencialMejora) + 
+                                 parseFloat(topImprovementAreas[2].potencialMejora)).toFixed(2)
+                            } puntos. ${
+                                highImportanceAreas.filter(r => r.satisfaction <= 5).length > 0 ?
+                                `Además, hay áreas de máxima importancia (${highImportanceAreas.filter(r => r.satisfaction <= 5).map(r => r.name).join(', ')}) donde tu satisfacción es baja, lo cual representa una vulnerabilidad en los fundamentos de tu vida.` :
+                                'Por otro lado, tus áreas de alta importancia están relativamente estables, lo que te da una base desde la cual trabajar en las mejoras necesarias.'
+                            } El camino hacia una mayor satisfacción general no requiere mejoras incrementales en todas las áreas, sino intervenciones estratégicas y concentradas en los 3-5 puntos de máximo apalancamiento que identificamos. ${
+                                overallScore < 6 ? 
+                                'Dado tu score actual, considerá esto una llamada de atención para hacer cambios estructurales, no cosméticos.' :
+                                'Con el score que tenés, cambios focalizados en las áreas correctas podrían llevarte a un nivel cualitativamente diferente de bienestar.'
+                            }
+                        </p>
+                    </div>
+                </div>
+            `;
+
+            const avgImportance = (results.reduce((sum, r) => sum + r.importance, 0) / results.length).toFixed(1);
+            const avgSatisfaction = (results.reduce((sum, r) => sum + r.satisfaction, 0) / results.length).toFixed(1);
+
+            document.getElementById('analysis-content').innerHTML = html;
+            document.getElementById('results').classList.add('visible');
+            document.getElementById('results').scrollIntoView({ behavior: 'smooth' });
+        }
+    </script>
+</body>
+</html>
